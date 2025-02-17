@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    consul:
+      host: ${CONSUL_HOST:localhost} # Usa la variable de entorno, con 'localhost' como valor por defecto si no está configurada
+      port: ${CONSUL_PORT:8500}
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          
+      routes:
+        - id: tsg-auth
+          uri: lb://tsg-auth
+          predicates:
+            - Path=/api/tsg-auth/user/**
+          filters:
+            - StripPrefix=2
+            - RewritePath=/api/tsg-auth/(?<segment>.*), /$\{segment}
+
+
+
+ 
