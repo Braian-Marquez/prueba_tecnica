@@ -37,9 +37,6 @@ public class UserEntity implements UserDetails {
 
 	private String password;
 
-	private Boolean validation = false;
-
-	private Boolean termsAndConditions = false;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Role> roles=new ArrayList<>();

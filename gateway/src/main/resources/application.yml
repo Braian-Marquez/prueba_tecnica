@@ -14,7 +14,7 @@ spring:
         - id: tsg-auth
           uri: lb://tsg-auth
           predicates:
-            - Path=/api/tsg-auth/user/**
+            - Path=/api/tsg-auth/**
           filters:
             - StripPrefix=2
             - RewritePath=/api/tsg-auth/(?<segment>.*), /$\{segment}

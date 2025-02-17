@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE customer SET soft_delete = true WHERE id=?")
 @Where(clause = "soft_delete=false")
-@Table(name = "customer", indexes = @Index(name = "unique_dni", columnList = "dni", unique = true))
+@Table(name = "customer")
 public class Customer implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
