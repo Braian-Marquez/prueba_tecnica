@@ -4,22 +4,23 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.tsg.commons.exception.BadCredentialsException;
 import com.tsg.commons.exception.ErrorDto;
 import com.tsg.commons.exception.ErrorResponse;
 import com.tsg.commons.exception.InsufficientPermissionsException;
 import com.tsg.commons.exception.InvalidCredentialsException;
 import com.tsg.commons.exception.NotFoundException;
-
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.ConstraintViolationException;
 
@@ -27,7 +28,14 @@ import jakarta.validation.ConstraintViolationException;
 public class GlobalHandleException {
 	private Logger logger = LoggerFactory.getLogger(GlobalHandleException.class);
 
-
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, String>> handleJsonParseError(HttpMessageNotReadableException ex) {
+        Throwable cause = ex.getCause();
+        if (cause instanceof InvalidFormatException) {
+            return new ResponseEntity<>(Map.of("error", "El status solo puede ser DRAFT, PUBLISHED o ARCHIVED."), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(Map.of("error", "El status solo puede ser DRAFT, PUBLISHED o ARCHIVED."), HttpStatus.BAD_REQUEST);
+    }
 	@ExceptionHandler(InvalidCredentialsException.class)
 	public ResponseEntity<ErrorDto> handleInvalidCredentialsException(InvalidCredentialsException e) {
 		ErrorDto response = new ErrorDto();
@@ -44,7 +52,6 @@ public class GlobalHandleException {
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
 
-	
 	@ExceptionHandler(value = BadCredentialsException.class)
 	public ResponseEntity<ErrorDto> handlBadCredentialsException(BadCredentialsException e) {
 		ErrorDto response = new ErrorDto();
@@ -67,7 +74,7 @@ public class GlobalHandleException {
 		List<String> errors = new ArrayList<>();
 
 		ex.getConstraintViolations().forEach((violation) -> {
-			errors.add(  violation.getMessage());
+			errors.add(violation.getMessage());
 		});
 
 		ErrorDto response = new ErrorDto();
@@ -77,8 +84,6 @@ public class GlobalHandleException {
 
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
-
-
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -108,12 +113,12 @@ public class GlobalHandleException {
 
 	@ExceptionHandler(ExpiredJwtException.class)
 	public ResponseEntity<Object> handleExpiredJwtException(ExpiredJwtException ex) {
-	    String errorMessage = "Token has expired. Please reauthenticate or obtain a new token.";
-	    logger.error("Token expired: {}", ex.getMessage());
-	    Date expirationDate = ex.getClaims().getExpiration();
-	    errorMessage += " Token expired at: " + expirationDate;
-	    ErrorResponse errorResponse = buildErrorResponse(HttpStatus.UNAUTHORIZED, errorMessage);
-	    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+		String errorMessage = "Token has expired. Please reauthenticate or obtain a new token.";
+		logger.error("Token expired: {}", ex.getMessage());
+		Date expirationDate = ex.getClaims().getExpiration();
+		errorMessage += " Token expired at: " + expirationDate;
+		ErrorResponse errorResponse = buildErrorResponse(HttpStatus.UNAUTHORIZED, errorMessage);
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
 	}
 
 }

@@ -1,24 +1,15 @@
 spring:
-  config:
-    import: "consul:"
   application:
-    name: tsg-auth
+    name: tsg-auth  
   cloud:
     consul:
       host: ${CONSUL_HOST:localhost}
-      port: ${CONSUL_PORT:8500}
+      port: ${CONSUL_PORT:8500}     
       config:
-        watch:
-          enabled: false
         enabled: true
-        format: properties
-        prefix: config
-        default-context: tsg-auth
-        fail-fast: true
-        import-check:
-          enabled: false 
-      discovery:
-        enabled: true
-        register: true
-        health-check-path: /actuator/health
-        health-check-interval: 10s
+        format: YAML   
+        prefix: config 
+        default-context: application
+        profile-separator: ','
+
+

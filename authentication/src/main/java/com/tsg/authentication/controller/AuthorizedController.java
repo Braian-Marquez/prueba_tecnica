@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.tsg.authentication.models.repository.UserRepository;
 import com.tsg.authentication.models.response.TokenValidationResponse;
 import com.tsg.authentication.models.response.UserProfileResponse;
@@ -15,7 +14,6 @@ import com.tsg.authentication.security.JwtService;
 import com.tsg.authentication.utils.Messenger;
 import com.tsg.commons.exception.InvalidCredentialsException;
 import com.tsg.commons.models.enums.CodeEnum;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.jsonwebtoken.ExpiredJwtException;
