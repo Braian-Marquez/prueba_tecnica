@@ -3,8 +3,6 @@ server:
 api:
   path:
     messages: locale/message
-spring:
-  application:
-    name: tsg-auth
+
 
 

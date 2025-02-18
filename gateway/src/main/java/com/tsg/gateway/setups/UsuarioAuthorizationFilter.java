@@ -160,7 +160,7 @@ public class UsuarioAuthorizationFilter extends AbstractGatewayFilterFactory<Usu
 			return serviceUrl;
 
 		}
-		System.out.println("No se encontro el servicio permisos-auth");
+		System.out.println("No se encontro el servicio tsg-auth");
 		return null;
 	}
 
