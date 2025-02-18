@@ -1,5 +1,8 @@
 package com.tsg.authentication.controller;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
+
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +19,8 @@ import com.tsg.authentication.models.response.UserListResponse;
 import com.tsg.authentication.service.CustomerService;
 import com.tsg.commons.exception.NotFoundException;
 import com.tsg.commons.models.enums.GenericPage;
+import com.tsg.commons.models.enums.ResponseDTO;
+
 import org.springframework.data.domain.Sort;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -57,9 +62,11 @@ public class CustomerController {
 
 
     @DeleteMapping("/delete-customer")
-    public ResponseEntity<Void> deleteUser(@RequestParam Long id) {
+    public ResponseEntity<ResponseDTO> deleteUser(@RequestParam Long id) {
         customerService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+         ResponseDTO response = ResponseDTO.builder().httpStatusCode(HttpStatus.ACCEPTED.value()).timestamp(LocalDateTime.now())
+                        .description(Collections.singletonList("Se ha eliminado con exito.")).build();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
 
 }

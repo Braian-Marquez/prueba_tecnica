@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE usuario SET soft_delete = true WHERE id=?")
+@SQLDelete(sql = "UPDATE users SET soft_delete = true WHERE id=?")
 @Where(clause = "soft_delete=false")
-@Table(name = "usuario", indexes = @Index(name = "unique_email", columnList = "email", unique = true))
+@Table(name = "users", indexes = @Index(name = "unique_email", columnList = "email", unique = true))
 public class UserEntity implements UserDetails {
 
 	private static final long serialVersionUID = 1L;

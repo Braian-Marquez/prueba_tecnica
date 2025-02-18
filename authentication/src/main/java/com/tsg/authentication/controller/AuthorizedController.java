@@ -39,12 +39,14 @@ public class AuthorizedController {
 	public ResponseEntity<?> validateAuthToken(@RequestHeader("Authorization") String authHeader) {
 	    try {
 	        if (authHeader != null && !authHeader.isEmpty()) {
+				System.out.println("authHeader: " + authHeader);
 	            String jwtToken = authHeader.replace("Bearer ", "").trim();
 	            String username = jwtService.extractUsername(jwtToken);
 	            UserProfileResponse userProfile = userRepository.findUserProfileByUsername(username).orElseThrow(() -> new InvalidCredentialsException("El usuario no existe"));
 	            TokenValidationResponse validationResponse = new TokenValidationResponse();
-	            validationResponse.setIdProfile(userProfile.getIdProfile());
+	            validationResponse.setId(userProfile.getIdProfile());
 	            validationResponse.setRoles(userProfile.getRoles());
+				System.out.println("authHeader: " + validationResponse.toString());
 	            return ResponseEntity.status(HttpStatus.ACCEPTED).body(validationResponse);
 	        } else {
 	            throw new InvalidCredentialsException(messenger.getMessage(CodeEnum.INVALID_CREDENTIALS));

@@ -21,9 +21,9 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
                         "u.id AS idUser, " +
                         "c.first_name AS name, " +
                         "ARRAY_AGG(DISTINCT r.name) AS roles " +
-                        "FROM usuario u " +
+                        "FROM users u " +
                         "LEFT JOIN customer c ON u.id = c.id_user " +
-                        "LEFT JOIN usuario_roles ur ON ur.user_entity_id = u.id " +
+                        "LEFT JOIN users_roles ur ON ur.user_entity_id = u.id " +
                         "LEFT JOIN roles r ON r.id = ur.roles_id " +
                         "WHERE u.soft_delete = false AND u.email = :email " + 
                         "GROUP BY u.id, c.id, c.first_name", nativeQuery = true)
@@ -40,9 +40,9 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
                         "u.id AS idUser, " +
                         "c.first_name AS name, " +
                         "ARRAY_AGG(DISTINCT r.name) AS roles " +
-                        "FROM usuario u " +
+                        "FROM users u " +
                         "LEFT JOIN customer c ON u.id = c.id_user " +
-                        "LEFT JOIN usuario_roles AS ur ON ur.user_entity_id = u.id " +
+                        "LEFT JOIN users_roles AS ur ON ur.user_entity_id = u.id " +
                         "LEFT JOIN roles AS r ON r.id = ur.roles_id " +
                         "WHERE u.id = :userId AND u.soft_delete = false " +
                         "GROUP BY u.id, c.id, c.first_name", nativeQuery = true)
@@ -53,9 +53,9 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
                         "c.first_name AS name, " +
                         "u.email AS email, " +
                         "ARRAY_AGG(DISTINCT r.name) AS roles " +
-                        "FROM usuario u " +
+                        "FROM users u " +
                         "LEFT JOIN customer c ON u.id = c.id_user " +
-                        "LEFT JOIN usuario_roles ur ON ur.user_entity_id = u.id " +
+                        "LEFT JOIN users_roles ur ON ur.user_entity_id = u.id " +
                         "LEFT JOIN roles r ON r.id = ur.roles_id " +
                         "WHERE u.soft_delete = false " +
                         "GROUP BY u.id, c.id, c.first_name " +
@@ -66,7 +66,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
         List<UserListResponse> findUserPage(String sortDirection, int pageSize, int offset);
 
         @Query(value = "SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END " +
-                        "FROM usuario u WHERE u.email = :email ", nativeQuery = true)
+                        "FROM users u WHERE u.email = :email ", nativeQuery = true)
         boolean existsByEmailAndIdNot(@Param("email") String email);
 
 }

@@ -95,7 +95,6 @@ public class UsuarioAuthorizationFilter extends AbstractGatewayFilterFactory<Usu
 						return chain.filter(exchange);
 					})
 					.onErrorResume(WebClientResponseException.class, error -> {
-						// Manejo de errores de WebClient
 						System.out.println("Error al llamar al servicio de autenticación: " + error.getStatusCode());
 						System.out.println("Cuerpo del error: " + error.getResponseBodyAsString());
 						try {

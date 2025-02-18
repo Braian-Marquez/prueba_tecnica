@@ -1,6 +1,10 @@
 package com.tsg.commons.models.entity;
 
 import java.time.LocalDateTime;
+
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.tsg.commons.models.enums.PostStatus;
 import jakarta.persistence.Column;
@@ -21,6 +25,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE posts SET soft_delete = true WHERE id=?")
+@Where(clause = "soft_delete=false")
 @Table(name = "posts")
 public class Post {
 

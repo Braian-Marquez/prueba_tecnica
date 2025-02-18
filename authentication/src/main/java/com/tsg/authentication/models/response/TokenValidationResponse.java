@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 public class TokenValidationResponse {
 	private List<String> roles;
-	private Long idProfile;
+	public Long id;
 }
