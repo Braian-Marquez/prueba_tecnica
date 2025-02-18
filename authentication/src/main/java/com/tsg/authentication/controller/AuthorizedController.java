@@ -20,7 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -34,19 +33,17 @@ public class AuthorizedController {
 	private final Messenger messenger;
 	private Logger logger = LoggerFactory.getLogger(AuthorizedController.class);
 	
-	@Operation(hidden = true)
+
 	@GetMapping(value = "/validate-token")
 	public ResponseEntity<?> validateAuthToken(@RequestHeader("Authorization") String authHeader) {
 	    try {
 	        if (authHeader != null && !authHeader.isEmpty()) {
-				System.out.println("authHeader: " + authHeader);
 	            String jwtToken = authHeader.replace("Bearer ", "").trim();
 	            String username = jwtService.extractUsername(jwtToken);
 	            UserProfileResponse userProfile = userRepository.findUserProfileByUsername(username).orElseThrow(() -> new InvalidCredentialsException("El usuario no existe"));
 	            TokenValidationResponse validationResponse = new TokenValidationResponse();
 	            validationResponse.setId(userProfile.getIdProfile());
 	            validationResponse.setRoles(userProfile.getRoles());
-				System.out.println("authHeader: " + validationResponse.toString());
 	            return ResponseEntity.status(HttpStatus.ACCEPTED).body(validationResponse);
 	        } else {
 	            throw new InvalidCredentialsException(messenger.getMessage(CodeEnum.INVALID_CREDENTIALS));

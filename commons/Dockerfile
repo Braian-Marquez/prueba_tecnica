@@ -15,4 +15,4 @@ WORKDIR /app
 
 COPY --from=build /app/target/commons-1.0.0.jar ./commons-1.0.0.jar
 
-RUN mvn install:install-file -Dfile=./commons-1.0.0.jar -DgroupId=com.api -DartifactId=commons -Dversion=1.0.0 -Dpackaging=jar
+RUN mvn install:install-file -Dfile=./commons-1.0.0.jar -DgroupId=com.tsg -DartifactId=commons -Dversion=1.0.0 -Dpackaging=jar

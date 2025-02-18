@@ -16,14 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.tsg.commons.exception.NotFoundException;
-import com.tsg.commons.models.entity.Post;
 import com.tsg.commons.models.enums.GenericPage;
 import com.tsg.commons.models.enums.ResponseDTO;
 import com.tsg.posts.models.request.PostDTO;
 import com.tsg.posts.models.response.PostDetailsResponse;
 import com.tsg.posts.models.response.PostResponse;
 import com.tsg.posts.service.PostService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 

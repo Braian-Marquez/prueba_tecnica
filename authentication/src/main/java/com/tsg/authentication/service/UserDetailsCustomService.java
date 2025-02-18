@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -49,20 +50,22 @@ public class UserDetailsCustomService {
 		return user;
 	}
 
-	@Transactional
-	public ResponseEntity<?> saveCustomer(AuthenticationRequest userRequest) throws IOException, InvalidCredentialsException {
+@Transactional
+public ResponseEntity<?> saveCustomer(AuthenticationRequest userRequest) throws IOException, InvalidCredentialsException {
+    try {
+        Optional<UserEntity> existingUser = userRepository.findByEmail(userRequest.getEmail());
 
-		Optional<UserEntity> existingUser = userRepository.findByEmail(userRequest.getEmail());
+        if (existingUser.isPresent()) {
+            throw new NotFoundException("El usuario ya existe.");
+        }
 
-		if (existingUser.isPresent()) {
-			throw new NotFoundException("El usuario ya existe.");
-		}
-		UserEntity newUser = new UserEntity();
-		newUser.setEmail(userRequest.getEmail());
-		newUser.setUsername(userRequest.getEmail());
-		newUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-		newUser.setRoles(new ArrayList<>(List.of(roleRepository.findByName(RoleType.USER.getFullRoleName()))));
-		userRepository.save(newUser);
+        UserEntity newUser = new UserEntity();
+        newUser.setEmail(userRequest.getEmail());
+        newUser.setUsername(userRequest.getEmail());
+        newUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        newUser.setRoles(new ArrayList<>(List.of(roleRepository.findByName(RoleType.USER.getFullRoleName()))));
+
+        userRepository.save(newUser);
 
 		Customer entity = new Customer();
 		entity.setIdUser(newUser.getId());
@@ -77,7 +80,10 @@ public class UserDetailsCustomService {
 
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
 
-	}
+	} catch (DataIntegrityViolationException e) {
+        throw new NotFoundException("El usuario ya existe.");
+    }
+}
 
 	private String formatName(String name) {
 		if (name == null || name.isEmpty()) {

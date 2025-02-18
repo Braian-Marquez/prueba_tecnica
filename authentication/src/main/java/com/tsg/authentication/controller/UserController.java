@@ -19,14 +19,12 @@ import com.tsg.commons.exception.BadCredentialsException;
 import com.tsg.commons.exception.InvalidCredentialsException;
 import com.tsg.commons.models.entity.UserEntity;
 import com.tsg.commons.models.enums.CodeEnum;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 @Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/public/v1")
-@Tag(name = "Authorized - Controller", description = "Endpoints para autenticar usuarios y registrar Invitados.")
 public class UserController {
 
 	private final UserDetailsCustomService service;
@@ -35,7 +33,6 @@ public class UserController {
 	private final Messenger messenger;
 
 	@PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
-	@Operation(summary = "Login", description = "Permite a un Usuario logearse ingresando email y password.")
 	public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest)
 	        throws InvalidCredentialsException {
 	    UserEntity userEntity = service.login(authenticationRequest);

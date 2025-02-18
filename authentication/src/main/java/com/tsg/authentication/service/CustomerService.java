@@ -17,6 +17,8 @@ import com.tsg.commons.models.entity.Customer;
 import com.tsg.commons.models.entity.UserEntity;
 import com.tsg.commons.models.enums.CodeEnum;
 import com.tsg.commons.models.enums.GenericPage;
+
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -52,14 +54,30 @@ public class CustomerService {
 
     }
 
+    @Transactional
     public void deleteUser(Long id) {
-        Optional<Customer> customer = customerRepository.findById(id);
-        if (customer == null ) {
-            throw new NotFoundException(messenger.getMessage(CUSTOMER_NOT_EXIST));
-		}
-        customerRepository.deleteById(id);
-        userRepository.deleteById(customer.get().getIdUser());
+        Optional<Customer> customerOpt = customerRepository.findById(id);
+        if (customerOpt.isEmpty()) {
+            throw new NotFoundException("El usuario no existe.");
+        }
+        Customer customer = customerOpt.get();
+        Optional<UserEntity> userOpt = userRepository.findById(customer.getIdUser());
+        if (userOpt.isPresent()) {
+            UserEntity user = userOpt.get();
+            int count = 1;
+            String newEmail = user.getEmail() + "-deleted";
+            while (userRepository.existsByEmail(newEmail)) {
+                newEmail = user.getEmail() + "-deleted-" + count;
+                count++;
+            }
+            user.setEmail(newEmail);
+            user.setSoftDelete(true);  
+            userRepository.save(user); 
+        }
+        customer.setSoftDelete(true);
+        customerRepository.save(customer);
     }
+    
 
     public CustomerResponse updateUser(Long id, UpdateUser userUpdateDTO) {
         Optional<Customer> customer = customerRepository.findById(id);
