@@ -110,7 +110,22 @@ services:
 networks:
   app-network:
     external: true
+```
 
+## Pruebas Unitarias con Mockito
+
+He implementado pruebas unitarias en los proyectos `tsg-auth` y `tsg-posts` utilizando [Mockito](https://site.mockito.org/), un framework de simulación para pruebas en Java. Mockito nos permite crear objetos simulados (mocks) y definir su comportamiento, facilitando la verificación de la lógica de negocio de nuestras aplicaciones de manera aislada.
+
+### Configuración de Dependencias
+
+Para incorporar Mockito en nuestros proyectos, añadimos la siguiente dependencia al archivo `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-test</artifactId>
+    <scope>test</scope>
+</dependency>
 
 
 
