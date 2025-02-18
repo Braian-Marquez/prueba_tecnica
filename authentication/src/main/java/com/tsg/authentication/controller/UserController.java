@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.tsg.authentication.models.repository.UserRepository;
 import com.tsg.authentication.models.request.AuthenticationRequest;
-import com.tsg.authentication.models.request.CustomerRequest;
 import com.tsg.authentication.models.response.UserProfileResponse;
 import com.tsg.authentication.models.response.UserProfileResponseImpl;
 import com.tsg.authentication.security.JwtService;
@@ -57,9 +56,8 @@ public class UserController {
 	}
 
 
-	@PostMapping("/register-customer")
-	@Operation(summary = "Registro", description = "Permite a un Customer registrarse.")
-	public ResponseEntity<?> registerCustomer(@RequestBody CustomerRequest user) throws IOException, InvalidCredentialsException {
+	@PostMapping("/register")
+	public ResponseEntity<?> registerCustomer(@RequestBody AuthenticationRequest user) throws IOException, InvalidCredentialsException {
 		return service.saveCustomer(user);
 	}
 

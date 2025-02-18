@@ -3,6 +3,8 @@ package com.tsg.authentication.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -16,7 +18,6 @@ import com.tsg.authentication.models.repository.CustomerRepository;
 import com.tsg.authentication.models.repository.RoleRepository;
 import com.tsg.authentication.models.repository.UserRepository;
 import com.tsg.authentication.models.request.AuthenticationRequest;
-import com.tsg.authentication.models.request.CustomerRequest;
 import com.tsg.authentication.models.response.UserResponse;
 import com.tsg.authentication.security.JwtService;
 import com.tsg.authentication.utils.Messenger;
@@ -40,7 +41,7 @@ public class UserDetailsCustomService {
 	private final JwtService jwtService;
 
 	public UserEntity login(AuthenticationRequest request) throws AuthenticationException, InvalidCredentialsException {
-		UserEntity user = userRepository.findByEmailOrUsername(request.getEmail(), request.getUsername())
+		UserEntity user = userRepository.findByEmailOrUsername(request.getEmail(), request.getPassword())
 				.orElseThrow(() -> new InvalidCredentialsException(messenger.getMessage(CodeEnum.USERNAME_NOT_FOUND)));
 		if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
 			throw new InvalidCredentialsException(messenger.getMessage(CodeEnum.WRONG_PASSWORD));
@@ -49,24 +50,30 @@ public class UserDetailsCustomService {
 	}
 
 	@Transactional
-	public ResponseEntity<?> saveCustomer(CustomerRequest userRequest) throws IOException, InvalidCredentialsException {
+	public ResponseEntity<?> saveCustomer(AuthenticationRequest userRequest) throws IOException, InvalidCredentialsException {
 
-		UserEntity user = userRepository.findByEmail(userRequest.getEmail())
-				.orElseThrow(() -> new NotFoundException("El usuario no existe."));
-		user.setUsername(userRequest.getEmail());
-		user.setRoles(new ArrayList<>(List.of(roleRepository.findByName(RoleType.USER.getFullRoleName()))));
-		userRepository.save(user);
+		Optional<UserEntity> existingUser = userRepository.findByEmail(userRequest.getEmail());
+
+		if (existingUser.isPresent()) {
+			throw new NotFoundException("El usuario ya existe.");
+		}
+		UserEntity newUser = new UserEntity();
+		newUser.setEmail(userRequest.getEmail());
+		newUser.setUsername(userRequest.getEmail());
+		newUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+		newUser.setRoles(new ArrayList<>(List.of(roleRepository.findByName(RoleType.USER.getFullRoleName()))));
+		userRepository.save(newUser);
 
 		Customer entity = new Customer();
-		entity.setIdUser(user.getId());
+		entity.setIdUser(newUser.getId());
 		entity.setFirstName(formatName(userRequest.getFirstName()));
 		entity.setLastName(formatName(userRequest.getLastName()));
 		customerRepository.save(entity);
 
 		UserResponse result = new UserResponse();
-		result.setIdUser(user.getId());
+		result.setIdUser(newUser.getId());
 		result.setIdProfile(entity.getId());
-		result.setToken(jwtService.generateToken(user));
+		result.setToken(jwtService.generateToken(newUser));
 
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(result);
 

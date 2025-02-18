@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -26,7 +29,9 @@ public class Customer implements Serializable {
 	private String lastName;
 	private Long idUser;
 	
-
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
+	
 	@Column(name = "soft_delete")
 	private Boolean softDelete = Boolean.FALSE;
 

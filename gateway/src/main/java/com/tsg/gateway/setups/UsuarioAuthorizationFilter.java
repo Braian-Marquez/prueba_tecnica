@@ -63,7 +63,7 @@ public class UsuarioAuthorizationFilter extends AbstractGatewayFilterFactory<Usu
 			}
 			String token = authHeader; 
 			return WebClient.builder()
-					.baseUrl(getUrl() + "/user/v1/info")
+					.baseUrl(getUrl() + "/public/v1/validate-token")
 					.defaultHeader(HttpHeaders.AUTHORIZATION, token)
 					.build()
 					.get()
@@ -75,7 +75,7 @@ public class UsuarioAuthorizationFilter extends AbstractGatewayFilterFactory<Usu
 							exchange.getRequest().mutate().header("user-id", String.valueOf(idUser));
 
 							List<String> roleList = response.getRoles();
-							List<String> requiredRoles = List.of("ROLE_USER","ROLE_ADMIN");
+							List<String> requiredRoles = List.of("ROLE_USER");
 
 							if (roleList.isEmpty() || roleList.stream().noneMatch(requiredRoles::contains)) {
 								try {

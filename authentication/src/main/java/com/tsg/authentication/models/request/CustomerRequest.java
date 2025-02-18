@@ -16,5 +16,5 @@ public class CustomerRequest {
 	@Size(min = 2, max = 50, message = "Last name must be between 2 and 50 characters.")
 	@Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$", message = "Last name must not contain numbers or special characters.")
 	private String lastName;
-	
+
 }

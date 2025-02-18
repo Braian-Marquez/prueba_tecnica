@@ -9,7 +9,8 @@ public class AuthenticationRequest {
 	
     @Email()
     private String email;
-    private String username;
+    private String firstName;
+    private String lastName;
     @Size(min = 8)
     private String password;
 }

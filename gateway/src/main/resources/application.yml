@@ -14,10 +14,28 @@ spring:
         - id: tsg-auth
           uri: lb://tsg-auth
           predicates:
-            - Path=/api/tsg-auth/**
+            - Path=/api/tsg-auth/public/**
           filters:
             - StripPrefix=2
-            - RewritePath=/api/tsg-auth/(?<segment>.*), /$\{segment}
+            - RewritePath=/api/tsg-auth/public/(?<segment>.*), /$\{segment}
+
+        - id: tsg-auth
+          uri: lb://tsg-auth
+          predicates:
+            - Path=/api/tsg-auth/user/**
+          filters:
+            - name: UsuarioAuthorizationFilter 
+            - StripPrefix=2
+            - RewritePath=/api/tsg-auth/user/(?<segment>.*), /$\{segment}
+
+        - id: tsg-posts
+          uri: lb://tsg-posts
+          predicates:
+            - Path=/api/tsg-posts/**
+          filters:
+            - name: UsuarioAuthorizationFilter 
+            - StripPrefix=2
+            - RewritePath=/api/tsg-posts/(?<segment>.*), /$\{segment}
 
 
 
