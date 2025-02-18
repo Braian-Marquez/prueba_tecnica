@@ -70,6 +70,49 @@ networks:
   app-network:
     external: true
 ```
+## 2️⃣ Agregar la Configuración en Consul
+Para que los servicios tsg-auth y tsg-posts obtengan su configuración desde Consul, debes crear las claves en el KV Store.
+
+## 📌 Registrar Configuración en Consul
+Ejecuta los siguientes comandos para registrar la configuración en Consul KV:
+
+```yaml
+consul kv put config/tsg-auth/data '
+spring:
+  application:
+    name: tsg-auth
+  datasource:
+    url: jdbc:postgresql://52.207.27.199:5432/tsg
+    username: postgres
+    password: Pa55w0rd
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+auth:
+  security:
+    SECRET_KEY: super-secret-key
+'
+```
+
+```yaml
+consul kv put config/tsg-posts/data '
+spring:
+  application:
+    name: tsg-posts
+  datasource:
+    url: jdbc:postgresql://52.207.27.199:5432/tsg
+    username: postgres
+    password: Pa55w0rd
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+'
+```
+
 
 ## 2️⃣ Levantar los Microservicios
 
@@ -110,7 +153,22 @@ services:
 networks:
   app-network:
     external: true
+```
 
+## Pruebas Unitarias con Mockito
+
+He implementado pruebas unitarias en los proyectos `tsg-auth` y `tsg-posts` utilizando [Mockito](https://site.mockito.org/), un framework de simulación para pruebas en Java. Mockito nos permite crear objetos simulados (mocks) y definir su comportamiento, facilitando la verificación de la lógica de negocio de nuestras aplicaciones de manera aislada.
+
+### Configuración de Dependencias
+
+Para incorporar Mockito en nuestros proyectos, añadimos la siguiente dependencia al archivo `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-test</artifactId>
+    <scope>test</scope>
+</dependency>
 
 
 
