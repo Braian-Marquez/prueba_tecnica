@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: tsg-posts
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+      - org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration
+server:
+  port: 8082
+
+api:
+  path:
+    messages: locale/message
+
+

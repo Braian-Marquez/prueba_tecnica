@@ -29,10 +29,10 @@ public class PostService {
     private final GenericMapper mapper;
     
     public PostDetailsResponse createPost(Long id, PostDTO postRequest) {
-         Optional<Customer> customer = customerRepository.findById(id);
-        if (customer == null ) {
+        Optional<Customer> customer = customerRepository.findById(id);
+        if (customer.isEmpty()) {
             throw new NotFoundException("El usuario no existe.");
-		}
+        }
         Post post = new Post();
         post.setTitle(postRequest.getTitle());
         post.setContent(postRequest.getContent());

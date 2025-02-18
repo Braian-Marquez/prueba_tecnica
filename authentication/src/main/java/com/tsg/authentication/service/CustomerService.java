@@ -26,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 public class CustomerService {
     
  
-    private static final CodeEnum CUSTOMER_NOT_EXIST = null;
     private final CustomerRepository customerRepository;
     private final UserRepository userRepository;
     private final Messenger messenger;
@@ -82,13 +81,14 @@ public class CustomerService {
 
     public CustomerResponse updateUser(Long id, UpdateUser userUpdateDTO) {
         Optional<Customer> customer = customerRepository.findById(id);
-        if (customer == null ) {
-            throw new NotFoundException(messenger.getMessage(CUSTOMER_NOT_EXIST));
-		}
+        if (customer.isEmpty()) {
+            throw new NotFoundException(messenger.getMessage(CodeEnum.CUSTOMER_NOT_EXIST));
+        }
         customer.get().setFirstName(userUpdateDTO.getFirstName());
         customer.get().setLastName(userUpdateDTO.getLastName());
         customerRepository.save(customer.get());
-        UserEntity user = userRepository.findById(customer.get().getIdUser()).orElseThrow(() -> new NotFoundException(messenger.getMessage(CUSTOMER_NOT_EXIST)));
+        UserEntity user = userRepository.findById(customer.get().getIdUser())
+                .orElseThrow(() -> new NotFoundException(messenger.getMessage(CodeEnum.CUSTOMER_NOT_EXIST)));
         CustomerResponse customerResponse = new CustomerResponse();
         customerResponse.setIdCustomer(customer.get().getId());
         customerResponse.setName(customer.get().getFirstName());

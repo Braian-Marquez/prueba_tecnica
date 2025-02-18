@@ -3,10 +3,7 @@ package com.tsg.authentication.exceptions;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -15,14 +12,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-
 import com.tsg.commons.exception.BadCredentialsException;
 import com.tsg.commons.exception.ErrorDto;
 import com.tsg.commons.exception.ErrorResponse;
 import com.tsg.commons.exception.InsufficientPermissionsException;
 import com.tsg.commons.exception.InvalidCredentialsException;
 import com.tsg.commons.exception.NotFoundException;
-
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.validation.ConstraintViolationException;
 
