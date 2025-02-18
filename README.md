@@ -5,7 +5,7 @@ Esta API permite gestionar usuarios y posts mediante una arquitectura de **micro
 ## 🚀 Tecnologías Utilizadas
 
 - **Java 17**
-- **Spring Boot 3.2**
+- **Spring Boot 3.1.2**
 - **Spring Security + JWT** (Autenticación)
 - **Spring Cloud Gateway** (Gestión de tráfico y seguridad)
 - **Spring Cloud Consul** (Registro y descubrimiento de servicios)
