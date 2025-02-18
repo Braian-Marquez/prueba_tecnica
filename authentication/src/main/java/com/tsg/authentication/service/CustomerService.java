@@ -41,15 +41,16 @@ public class CustomerService {
 
     public CustomerResponse getUserById(Long id) {
         Optional<Customer> customer = customerRepository.findById(id);
-        if (customer == null ) {
-            throw new NotFoundException(messenger.getMessage(CUSTOMER_NOT_EXIST));
+        if (customer.isEmpty()) {
+            throw new NotFoundException("El usuario no existe.");
 		}
-        UserEntity user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("El usuario no existe."));
+        UserEntity user = userRepository.findById(customer.get().getIdUser()).orElseThrow(() -> new NotFoundException("El usuario no existe."));
         CustomerResponse customerResponse = new CustomerResponse();
         customerResponse.setIdCustomer(customer.get().getId());
         customerResponse.setName(customer.get().getFirstName());
         customerResponse.setEmail(user.getEmail());
         customerResponse.setLastName(customer.get().getLastName());
+        customerResponse.setIdUser(user.getId());
         return customerResponse;
 
     }
@@ -93,6 +94,7 @@ public class CustomerService {
         customerResponse.setName(customer.get().getFirstName());
         customerResponse.setEmail(user.getEmail());
         customerResponse.setLastName(customer.get().getLastName());
+        customerResponse.setIdUser(user.getId());
         return customerResponse;
     }
 

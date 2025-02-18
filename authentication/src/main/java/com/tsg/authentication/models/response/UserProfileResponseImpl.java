@@ -2,43 +2,16 @@ package com.tsg.authentication.models.response;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserProfileResponseImpl implements UserProfileResponse {
-    private Long idProfile;
+    private Long idCustomer;
     private Long idUser;
     private String name;
     private List<String> roles;
     private String token; 
-
-    public UserProfileResponseImpl(Long idProfile, Long idUser, String name, List<String> roles, String token) {
-        this.idProfile = idProfile;
-        this.idUser = idUser;
-        this.name = name;
-        this.roles = roles;
-        this.token = token;
-    }
-
-    @Override
-    public Long getIdProfile() {
-        return idProfile;
-    }
-
-    @Override
-    public Long getIdUser() {
-        return idUser;
-    }
-
-    @Override
-    public String getToken() {
-        return token;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public List<String> getRoles() {
-        return roles;
-    }
 }

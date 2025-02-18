@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
         Optional<UserEntity> findByUsername(String username);
 
         @Query(value = "SELECT " +
-                        "c.id AS idProfile, " +
+                        "c.id AS idCustomer, " +
                         "u.id AS idUser, " +
                         "c.first_name AS name, " +
                         "ARRAY_AGG(DISTINCT r.name) AS roles " +
@@ -36,7 +36,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
         Optional<UserEntity> findByEmail(String email);
 
         @Query(value = "SELECT " +
-                        "c.id AS idProfile, " +
+                        "c.id AS idCustomer, " +
                         "u.id AS idUser, " +
                         "c.first_name AS name, " +
                         "ARRAY_AGG(DISTINCT r.name) AS roles " +
@@ -52,6 +52,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
                         "u.id AS idUser, " +
                         "c.first_name AS name, " +
                         "u.email AS email, " +
+                        "c.id AS idCustomer, " +
                         "ARRAY_AGG(DISTINCT r.name) AS roles " +
                         "FROM users u " +
                         "LEFT JOIN customer c ON u.id = c.id_user " +

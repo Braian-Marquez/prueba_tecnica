@@ -42,7 +42,7 @@ public class AuthorizedController {
 	            String username = jwtService.extractUsername(jwtToken);
 	            UserProfileResponse userProfile = userRepository.findUserProfileByUsername(username).orElseThrow(() -> new InvalidCredentialsException("El usuario no existe"));
 	            TokenValidationResponse validationResponse = new TokenValidationResponse();
-	            validationResponse.setId(userProfile.getIdProfile());
+	            validationResponse.setId(userProfile.getIdCustomer());
 	            validationResponse.setRoles(userProfile.getRoles());
 	            return ResponseEntity.status(HttpStatus.ACCEPTED).body(validationResponse);
 	        } else {

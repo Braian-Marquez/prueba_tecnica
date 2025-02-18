@@ -40,7 +40,7 @@ public class UserController {
 	    	  String jwtToken = jwtService.generateToken(userEntity);
 	          UserProfileResponse userProfile = userRepository.findUserProfileByUserId(userEntity.getId())
 	                  .map(profile -> new UserProfileResponseImpl(
-	                          profile.getIdProfile(),
+	                          profile.getIdCustomer(),
 	                          profile.getIdUser(),
 	                          profile.getName(),
 	                          profile.getRoles(),
