@@ -23,21 +23,25 @@ Esta API permite gestionar usuarios y posts mediante una arquitectura de **micro
 
 Este sistema sigue un enfoque basado en **microservicios**, donde cada módulo cumple una función específica.
 
-plaintext
+```plaintext
 ├── tsg-gateway (Spring Cloud Gateway)
 ├── tsg-auth (Gestión de autenticación y JWT)
 ├── tsg-posts (Gestión de posts)
 ├── Consul (Registro de servicios y configuración dinámica)
 └── Nginx (Proxy inverso)
-
+```
 ## 🛠️ Configuración de la Base de Datos
 
 El sistema usa PostgreSQL como base de datos. Se recomienda configurar las credenciales en un archivo .env o gestionarlas de manera segura en AWS.
 
 # Configuración de la base de datos (en application.properties o .env)
+
+```properties
+# Configuración de la base de datos (en application.properties o .env)
 spring.datasource.url=jdbc:postgresql://<IP_PRIVADA>:5432/tsg
 spring.datasource.username=postgres
 spring.datasource.password=<TU_PASSWORD>
+```
 
 ## 🔄 Pasos para Iniciar el Proyecto
 ## 1️⃣ Levantar Consul
