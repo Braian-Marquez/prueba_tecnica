@@ -64,7 +64,7 @@ docker run -d --name=consul \
   -p 8500:8500 \
   -p 8600:8600/udp \
   -e CONSUL_BIND_INTERFACE=eth0 \
-  hashicorp/consul:latest agent -server -bootstrap-expect=1 -client=0.0.0.0 -ui
+  hashicorp/consul:latest agent -server -bootstrap-expect=1 -client 0.0.0.0 -ui
 
 ```
 O a traves de un docker-compose.yml o un stack en Portainer
