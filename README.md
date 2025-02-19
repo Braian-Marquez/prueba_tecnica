@@ -30,18 +30,6 @@ Este sistema sigue un enfoque basado en **microservicios**, donde cada módulo c
 ├── Consul (Registro de servicios y configuración dinámica)
 └── Nginx (Proxy inverso)
 ```
-## 🛠️ Configuración de la Base de Datos
-
-El sistema usa PostgreSQL como base de datos. Se recomienda configurar las credenciales en un archivo .env o gestionarlas de manera segura en AWS.
-
-# Configuración de la base de datos (en application.properties o .env)
-
-```properties
-# Configuración de la base de datos (en application.properties o .env)
-spring.datasource.url=jdbc:postgresql://<IP_PRIVADA>:5432/tsg
-spring.datasource.username=postgres
-spring.datasource.password=<TU_PASSWORD>
-```
 
 ## 🔄 Pasos para Iniciar el Proyecto
 
