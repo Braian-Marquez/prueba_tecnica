@@ -44,6 +44,14 @@ spring.datasource.password=<TU_PASSWORD>
 ```
 
 ## 🔄 Pasos para Iniciar el Proyecto
+
+### 1️⃣ Clonar el repositorio
+
+```bash
+git clone <URL_DEL_REPO>
+cd <NOMBRE_DEL_PROYECTO>
+```
+
 ## 1️⃣ Levantar Consul
 Consul se ejecuta en el puerto 8500, pero NO debe ser expuesto al público.
 Se debe crear una red en Docker llamada app-network
@@ -115,7 +123,8 @@ spring:
 ```
 
 
-## 2️⃣ Levantar los Microservicios
+## 2️⃣ Levantar los Microservicios (Estos pasos no son necesarios para correr 
+el pryecto mas que nada es a nivel informativo de como esta funcionando actualmente la arquitectura)
 
 ```yaml
 services:
