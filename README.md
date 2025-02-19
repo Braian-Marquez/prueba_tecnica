@@ -18,6 +18,8 @@ Esta API permite gestionar usuarios y posts mediante una arquitectura de **micro
 - **Postman** (Pruebas y documentación)
 
 ---
+## 📂Documentacion de Postman
+https://documenter.getpostman.com/view/21902697/2sAYXFiHWU
 
 ## 📂 Arquitectura del Proyecto
 
@@ -59,12 +61,12 @@ docker network create app-network
 Iniciar Consul con Docker desde la consola
 
 ```bash
-docker run -d --name=consul \
-  --network=app-network \
-  -p 8500:8500 \
-  -p 8600:8600/udp \
-  -e CONSUL_BIND_INTERFACE=eth0 \
-  hashicorp/consul:latest agent -server -bootstrap-expect=1 -client=0.0.0.0 -ui
+docker run -d --name=consul `
+  --network=app-network `
+  -p 8500:8500 `
+  -p 8600:8600/udp `
+  -e CONSUL_BIND_INTERFACE=eth0 `
+  hashicorp/consul:latest agent -server -bootstrap-expect=1 --client 0.0.0.0 --ui
 
 ```
 O a traves de un docker-compose.yml o un stack en Portainer
@@ -98,63 +100,84 @@ Para que los servicios tsg-auth y tsg-posts obtengan su configuración desde Con
 
 ## 📌 Registrar Configuración en Consul en Windows
 Ejecuta los siguientes comandos para registrar la configuración en Consul KV:
-
+Constatar de que en consul el formato de los arhivos que se crean sean YAML
 ```yaml
-Invoke-RestMethod -Uri "http://localhost:8500/v1/kv/config/tsg-auth/data" -Method Put -Body '{
-  "spring": {
-    "application": {
-      "name": "tsg-auth"
-    },
-    "datasource": {
-      "url": "jdbc:postgresql://52.207.27.199:5432/tsg",
-      "username": "postgres",
-      "password": "Pa55w0rd",
-      "driver-class-name": "org.postgresql.Driver"
-    },
-    "jpa": {
-      "database-platform": "org.hibernate.dialect.PostgreSQLDialect",
-      "hibernate": {
-        "ddl-auto": "update"
-      }
-    }
-  },
-  "auth": {
-    "security": {
-      "SECRET_KEY": "super-secret-key"
-    }
-  }
-}' -ContentType "application/json"
+$yamlConfig = @"
+spring:
+  application:
+    name: tsg-auth  
+  datasource:
+    url: jdbc:postgresql://52.207.27.199:5432/tsg
+    username: postgres
+    password: Pa55w0rd
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+auth:
+  security:
+    SECRET_KEY: "5632546A574A387A413F4428472B4B6250645367566B59703373367639792442"
+"@
+
+Invoke-RestMethod -Uri "http://localhost:8500/v1/kv/config/tsg-auth/data" -Method Put -Body $yamlConfig -ContentType "text/plain"
 
 ```
 
 ```yaml
-Invoke-RestMethod -Uri "http://localhost:8500/v1/kv/config/tsg-posts/data" -Method Put -Body '{
-  "spring": {
-    "application": {
-      "name": "tsg-posts"
-    },
-    "datasource": {
-      "url": "jdbc:postgresql://52.207.27.199:5432/tsg",
-      "username": "postgres",
-      "password": "Pa55w0rd",
-      "driver-class-name": "org.postgresql.Driver"
-    },
-    "jpa": {
-      "database-platform": "org.hibernate.dialect.PostgreSQLDialect",
-      "hibernate": {
-        "ddl-auto": "update"
-      }
-    }
-  },
-  "auth": {
-    "security": {
-      "SECRET_KEY": "super-secret-key"
-    }
-  }
-}' -ContentType "application/json"
+$yamlConfig = @"
+spring:
+  application:
+    name: tsg-posts  
+  datasource:
+    url: jdbc:postgresql://52.207.27.199:5432/tsg
+    username: postgres
+    password: Pa55w0rd
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+auth:
+  security:
+    SECRET_KEY: "5632546A574A387A413F4428472B4B6250645367566B59703373367639792442"
+"@
+
+Invoke-RestMethod -Uri "http://localhost:8500/v1/kv/config/tsg-posts/data" -Method Put -Body $yamlConfig -ContentType "text/plain"
 
 ```
 
+## 🚀 Levantar Microservicios
+
+```bash
+git clone https://github.com/Braian-Marquez/prueba_tecnica.git
+```
+### 1️⃣ Construir el servicio **commons**  
+Antes de iniciar los microservicios, es necesario compilar y construir el módulo **commons**, ya que proporciona recursos compartidos para los demás servicios.  
+
+Ejecuta el siguiente comando dentro del directorio del microservicio **commons**:  
+
+```bash
+mvn clean install
+```
+Levantar el API Gateway
+
+```bash
+cd gateway
+./mvnw spring-boot:run
+```
+Levantar tsg-auth
+
+```bash
+cd ../tsg-auth
+./mvnw spring-boot:run
+```
+Levantar tsg-posts
+
+```bash
+cd ../tsg-posts
+./mvnw spring-boot:run
+```
 
 ## 2️⃣ Levantar los Microservicios (Estos pasos no son necesarios para correr 
 el pryecto mas que nada es a nivel informativo de como esta funcionando actualmente la arquitectura)
