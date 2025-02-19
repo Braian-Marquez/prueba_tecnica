@@ -46,6 +46,7 @@ spring.datasource.password=<TU_PASSWORD>
 ## 🔄 Pasos para Iniciar el Proyecto
 ## 1️⃣ Levantar Consul
 Consul se ejecuta en el puerto 8500, pero NO debe ser expuesto al público.
+Se debe crear una red en Docker llamada app-network
 ```yaml
 services:
   consul:
