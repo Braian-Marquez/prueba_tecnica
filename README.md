@@ -100,58 +100,49 @@ Para que los servicios tsg-auth y tsg-posts obtengan su configuración desde Con
 Ejecuta los siguientes comandos para registrar la configuración en Consul KV:
 Constatar de que en consul el formato de los arhivos que se crean sean YAML
 ```yaml
-Invoke-RestMethod -Uri "http://localhost:8500/v1/kv/config/tsg-auth/data" -Method Put -Body '{
-  "spring": {
-    "application": {
-      "name": "tsg-auth"
-    },
-    "datasource": {
-      "url": "jdbc:postgresql://52.207.27.199:5432/tsg",
-      "username": "postgres",
-      "password": "Pa55w0rd",
-      "driver-class-name": "org.postgresql.Driver"
-    },
-    "jpa": {
-      "database-platform": "org.hibernate.dialect.PostgreSQLDialect",
-      "hibernate": {
-        "ddl-auto": "update"
-      }
-    }
-  },
-  "auth": {
-    "security": {
-      "SECRET_KEY": "super-secret-key"
-    }
-  }
-}' -ContentType "application/json"
+$yamlConfig = @"
+spring:
+  application:
+    name: tsg-auth  
+  datasource:
+    url: jdbc:postgresql://52.207.27.199:5432/tsg
+    username: postgres
+    password: Pa55w0rd
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+auth:
+  security:
+    SECRET_KEY: "5632546A574A387A413F4428472B4B6250645367566B59703373367639792442"
+"@
 
+Invoke-RestMethod -Uri "http://localhost:8500/v1/kv/config/tsg-auth/data" -Method Put -Body $yamlConfig -ContentType "text/plain"
+****
 ```
 
 ```yaml
-Invoke-RestMethod -Uri "http://localhost:8500/v1/kv/config/tsg-posts/data" -Method Put -Body '{
-  "spring": {
-    "application": {
-      "name": "tsg-posts"
-    },
-    "datasource": {
-      "url": "jdbc:postgresql://52.207.27.199:5432/tsg",
-      "username": "postgres",
-      "password": "Pa55w0rd",
-      "driver-class-name": "org.postgresql.Driver"
-    },
-    "jpa": {
-      "database-platform": "org.hibernate.dialect.PostgreSQLDialect",
-      "hibernate": {
-        "ddl-auto": "update"
-      }
-    }
-  },
-  "auth": {
-    "security": {
-      "SECRET_KEY": "super-secret-key"
-    }
-  }
-}' -ContentType "application/json"
+$yamlConfig = @"
+spring:
+  application:
+    name: tsg-posts  
+  datasource:
+    url: jdbc:postgresql://52.207.27.199:5432/tsg
+    username: postgres
+    password: Pa55w0rd
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+auth:
+  security:
+    SECRET_KEY: "5632546A574A387A413F4428472B4B6250645367566B59703373367639792442"
+"@
+
+Invoke-RestMethod -Uri "http://localhost:8500/v1/kv/config/tsg-posts/data" -Method Put -Body $yamlConfig -ContentType "text/plain"
+
 
 ```
 
