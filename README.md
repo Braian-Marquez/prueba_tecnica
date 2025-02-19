@@ -98,7 +98,7 @@ Para que los servicios tsg-auth y tsg-posts obtengan su configuración desde Con
 
 ## 📌 Registrar Configuración en Consul en Windows
 Ejecuta los siguientes comandos para registrar la configuración en Consul KV:
-
+Constatar de que en consul el formato de los arhivos que se crean sean YAML
 ```yaml
 Invoke-RestMethod -Uri "http://localhost:8500/v1/kv/config/tsg-auth/data" -Method Put -Body '{
   "spring": {
