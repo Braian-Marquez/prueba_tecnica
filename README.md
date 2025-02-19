@@ -157,6 +157,9 @@ Invoke-RestMethod -Uri "http://localhost:8500/v1/kv/config/tsg-posts/data" -Meth
 
 ## 🚀 Levantar Microservicios
 
+```bash
+git clone https://github.com/Braian-Marquez/prueba_tecnica.git
+```
 ### 1️⃣ Construir el servicio **commons**  
 Antes de iniciar los microservicios, es necesario compilar y construir el módulo **commons**, ya que proporciona recursos compartidos para los demás servicios.  
 
