@@ -117,7 +117,7 @@ spring:
       ddl-auto: update
 auth:
   security:
-    SECRET_KEY: "5632546A574A387A413F4428472B4B6250645367566B59703373367639792442"
+    SECRET_KEY: "6B32794D4F6A396A5231552A58356B744C687654527A5670336B397839274D"
 "@
 
 Invoke-RestMethod -Uri "http://localhost:8500/v1/kv/config/tsg-auth/data" -Method Put -Body $yamlConfig -ContentType "text/plain"
@@ -140,7 +140,7 @@ spring:
       ddl-auto: update
 auth:
   security:
-    SECRET_KEY: "5632546A574A387A413F4428472B4B6250645367566B59703373367639792442"
+    SECRET_KEY: "6B32794D4F6A396A5231552A58356B744C687654527A5670336B397839274D"
 "@
 
 Invoke-RestMethod -Uri "http://localhost:8500/v1/kv/config/tsg-posts/data" -Method Put -Body $yamlConfig -ContentType "text/plain"
