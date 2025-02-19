@@ -18,6 +18,8 @@ Esta API permite gestionar usuarios y posts mediante una arquitectura de **micro
 - **Postman** (Pruebas y documentación)
 
 ---
+## 📂Documentacion de Postman
+https://documenter.getpostman.com/view/21902697/2sAYXFiHWU
 
 ## 📂 Arquitectura del Proyecto
 
