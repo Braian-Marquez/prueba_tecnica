@@ -41,7 +41,7 @@ cd <NOMBRE_DEL_PROYECTO>
 ```
 
 ## 1️⃣ Levantar Consul
-Consul se ejecuta en el puerto 8500, pero NO debe ser expuesto al público.
+Consul se ejecuta en el puerto 8500.
 Se debe crear una red en Docker llamada app-network
 ```yaml
 services:
