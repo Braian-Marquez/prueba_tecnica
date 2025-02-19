@@ -179,8 +179,7 @@ cd ../tsg-posts
 ./mvnw spring-boot:run
 ```
 
-## 2️⃣ Levantar los Microservicios - Docker (Estos pasos no son necesarios para correr 
-el proyecto mas que nada es a nivel informativo de como esta funcionando actualmente la arquitectura)
+## 2️⃣ Levantar los Microservicios - Docker (Estos pasos no son necesarios para correr el proyecto mas que nada es a nivel informativo de como esta funcionando actualmente la arquitectura)
 
 ```yaml
 services:
