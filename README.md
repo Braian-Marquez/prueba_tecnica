@@ -147,7 +147,7 @@ Invoke-RestMethod -Uri "http://localhost:8500/v1/kv/config/tsg-posts/data" -Meth
 
 ```
 
-## 🚀 Levantar Microservicios
+## 🚀 Levantar Microservicios 
 
 ```bash
 git clone https://github.com/Braian-Marquez/prueba_tecnica.git
@@ -179,8 +179,8 @@ cd ../tsg-posts
 ./mvnw spring-boot:run
 ```
 
-## 2️⃣ Levantar los Microservicios (Estos pasos no son necesarios para correr 
-el pryecto mas que nada es a nivel informativo de como esta funcionando actualmente la arquitectura)
+## 2️⃣ Levantar los Microservicios - Docker (Estos pasos no son necesarios para correr 
+el proyecto mas que nada es a nivel informativo de como esta funcionando actualmente la arquitectura)
 
 ```yaml
 services:
