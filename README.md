@@ -33,6 +33,14 @@ Este sistema sigue un enfoque basado en **microservicios**, donde cada módulo c
 
 ## 🔄 Pasos para Iniciar el Proyecto
 
+## 2️⃣ Requisitos previos
+Antes de iniciar, asegúrate de tener instalado lo siguiente:
+
+## ✅ Docker
+## ✅ Git
+## ✅ Java 17+
+## ✅ Maven o Gradle
+
 ### 1️⃣ Clonar el repositorio
 
 ```bash
@@ -43,6 +51,17 @@ cd <NOMBRE_DEL_PROYECTO>
 ## 1️⃣ Levantar Consul
 Consul se ejecuta en el puerto 8500.
 Se debe crear una red en Docker llamada app-network
+
+```bash
+docker network create app-network
+```
+
+Iniciar Consul con Docker
+
+```bash
+docker run -d --name=consul --network=app-network -p 8500:8500 consul
+```
+
 ```yaml
 services:
   consul:
