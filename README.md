@@ -119,7 +119,7 @@ auth:
 "@
 
 Invoke-RestMethod -Uri "http://localhost:8500/v1/kv/config/tsg-auth/data" -Method Put -Body $yamlConfig -ContentType "text/plain"
-****
+
 ```
 
 ```yaml
@@ -142,7 +142,6 @@ auth:
 "@
 
 Invoke-RestMethod -Uri "http://localhost:8500/v1/kv/config/tsg-posts/data" -Method Put -Body $yamlConfig -ContentType "text/plain"
-
 
 ```
 
