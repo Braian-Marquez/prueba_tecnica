@@ -30,22 +30,45 @@ Este sistema sigue un enfoque basado en **microservicios**, donde cada módulo c
 ├── Consul (Registro de servicios y configuración dinámica)
 └── Nginx (Proxy inverso)
 ```
-## 🛠️ Configuración de la Base de Datos
-
-El sistema usa PostgreSQL como base de datos. Se recomienda configurar las credenciales en un archivo .env o gestionarlas de manera segura en AWS.
-
-# Configuración de la base de datos (en application.properties o .env)
-
-```properties
-# Configuración de la base de datos (en application.properties o .env)
-spring.datasource.url=jdbc:postgresql://<IP_PRIVADA>:5432/tsg
-spring.datasource.username=postgres
-spring.datasource.password=<TU_PASSWORD>
-```
 
 ## 🔄 Pasos para Iniciar el Proyecto
+
+## 2️⃣ Requisitos previos
+Antes de iniciar, asegúrate de tener instalado lo siguiente:
+
+## ✅ Docker
+## ✅ Git
+## ✅ Java 17+
+## ✅ Maven o Gradle
+
+### 1️⃣ Clonar el repositorio
+
+```bash
+git clone <URL_DEL_REPO>
+cd <NOMBRE_DEL_PROYECTO>
+```
+
 ## 1️⃣ Levantar Consul
-Consul se ejecuta en el puerto 8500, pero NO debe ser expuesto al público.
+Consul se ejecuta en el puerto 8500.
+Se debe crear una red en Docker llamada app-network
+
+```bash
+docker network create app-network
+```
+
+Iniciar Consul con Docker desde la consola
+
+```bash
+docker run -d --name=consul \
+  --network=app-network \
+  -p 8500:8500 \
+  -p 8600:8600/udp \
+  -e CONSUL_BIND_INTERFACE=eth0 \
+  hashicorp/consul:latest agent -server -bootstrap-expect=1 -client=0.0.0.0 -ui
+
+```
+O a traves de un docker-compose.yml o un stack en Portainer
+
 ```yaml
 services:
   consul:
@@ -73,48 +96,68 @@ networks:
 ## 2️⃣ Agregar la Configuración en Consul
 Para que los servicios tsg-auth y tsg-posts obtengan su configuración desde Consul, debes crear las claves en el KV Store.
 
-## 📌 Registrar Configuración en Consul
+## 📌 Registrar Configuración en Consul en Windows
 Ejecuta los siguientes comandos para registrar la configuración en Consul KV:
 
 ```yaml
-consul kv put config/tsg-auth/data '
-spring:
-  application:
-    name: tsg-auth
-  datasource:
-    url: jdbc:postgresql://52.207.27.199:5432/tsg
-    username: postgres
-    password: Pa55w0rd
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: update
-auth:
-  security:
-    SECRET_KEY: super-secret-key
-'
+Invoke-RestMethod -Uri "http://localhost:8500/v1/kv/config/tsg-auth/data" -Method Put -Body '{
+  "spring": {
+    "application": {
+      "name": "tsg-auth"
+    },
+    "datasource": {
+      "url": "jdbc:postgresql://52.207.27.199:5432/tsg",
+      "username": "postgres",
+      "password": "Pa55w0rd",
+      "driver-class-name": "org.postgresql.Driver"
+    },
+    "jpa": {
+      "database-platform": "org.hibernate.dialect.PostgreSQLDialect",
+      "hibernate": {
+        "ddl-auto": "update"
+      }
+    }
+  },
+  "auth": {
+    "security": {
+      "SECRET_KEY": "super-secret-key"
+    }
+  }
+}' -ContentType "application/json"
+
 ```
 
 ```yaml
-consul kv put config/tsg-posts/data '
-spring:
-  application:
-    name: tsg-posts
-  datasource:
-    url: jdbc:postgresql://52.207.27.199:5432/tsg
-    username: postgres
-    password: Pa55w0rd
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: update
-'
+Invoke-RestMethod -Uri "http://localhost:8500/v1/kv/config/tsg-posts/data" -Method Put -Body '{
+  "spring": {
+    "application": {
+      "name": "tsg-posts"
+    },
+    "datasource": {
+      "url": "jdbc:postgresql://52.207.27.199:5432/tsg",
+      "username": "postgres",
+      "password": "Pa55w0rd",
+      "driver-class-name": "org.postgresql.Driver"
+    },
+    "jpa": {
+      "database-platform": "org.hibernate.dialect.PostgreSQLDialect",
+      "hibernate": {
+        "ddl-auto": "update"
+      }
+    }
+  },
+  "auth": {
+    "security": {
+      "SECRET_KEY": "super-secret-key"
+    }
+  }
+}' -ContentType "application/json"
+
 ```
 
 
-## 2️⃣ Levantar los Microservicios
+## 2️⃣ Levantar los Microservicios (Estos pasos no son necesarios para correr 
+el pryecto mas que nada es a nivel informativo de como esta funcionando actualmente la arquitectura)
 
 ```yaml
 services:
