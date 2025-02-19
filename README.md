@@ -155,6 +155,34 @@ Invoke-RestMethod -Uri "http://localhost:8500/v1/kv/config/tsg-posts/data" -Meth
 
 ```
 
+## 🚀 Levantar Microservicios
+
+### 1️⃣ Construir el servicio **commons**  
+Antes de iniciar los microservicios, es necesario compilar y construir el módulo **commons**, ya que proporciona recursos compartidos para los demás servicios.  
+
+Ejecuta el siguiente comando dentro del directorio del microservicio **commons**:  
+
+```bash
+mvn clean install
+```
+Levantar el API Gateway
+
+```bash
+cd gateway
+./mvnw spring-boot:run
+```
+Levantar tsg-auth
+
+```bash
+cd ../tsg-auth
+./mvnw spring-boot:run
+```
+Levantar tsg-posts
+
+```bash
+cd ../tsg-posts
+./mvnw spring-boot:run
+```
 
 ## 2️⃣ Levantar los Microservicios (Estos pasos no son necesarios para correr 
 el pryecto mas que nada es a nivel informativo de como esta funcionando actualmente la arquitectura)
